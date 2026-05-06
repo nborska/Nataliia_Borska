@@ -1,1 +1,1 @@
-{"id": "clean-step-1", "command": "pip install git-filter-repo -q 2>&1 | tail -3 && git -C /root/Nataliia_Borska filter-repo --version"}
+{"id": "clean-step-2", "command": "apt-get install -y git-filter-repo 2>&1 | tail -3 && git filter-repo --version"}
