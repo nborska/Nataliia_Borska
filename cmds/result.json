@@ -1,4 +1,4 @@
 {
-  "id": "setup-agent-1",
-  "result": "STEP1 DONE\n"
+  "id": "setup-agent-2",
+  "result": "● mybot.service - Telegram Agent Bot on Claude\n     Loaded: loaded (/etc/systemd/system/mybot.service; enabled; preset: enabled)\n     Active: activating (auto-restart) (Result: exit-code) since Wed 2026-05-06 18:47:14 UTC; 2s ago\n    Process: 8986 ExecStart=/home/bot/claude-bot/venv/bin/python /home/bot/claude-bot/agent_bot.py (code=exited, status=1/FAILURE)\n   Main PID: 8986 (code=exited, status=1/FAILURE)\n        CPU: 296ms\n\nMay 06 18:47:14 ubuntu-s-1vcpu-1gb-ams3 systemd[1]: mybot.service: Failed with result 'exit-code'.\n"
 }
