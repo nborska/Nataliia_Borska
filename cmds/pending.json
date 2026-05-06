@@ -1,1 +1,1 @@
-{"id": "check-logs-1", "command": "journalctl -u mybot.service -n 30 --no-pager"}
+{"id": "fix-deps-1", "command": "/home/bot/claude-bot/venv/bin/pip install httpx beautifulsoup4 && systemctl restart mybot.service && sleep 4 && journalctl -u mybot.service -n 10 --no-pager"}
