@@ -1,4 +1,4 @@
 {
-  "id": "fix-venv-1",
-  "result": "May 06 18:48:42 ubuntu-s-1vcpu-1gb-ams3 systemd[1]: mybot.service: Main process exited, code=exited, status=1/FAILURE\nMay 06 18:48:42 ubuntu-s-1vcpu-1gb-ams3 systemd[1]: mybot.service: Failed with result 'exit-code'.\nMay 06 18:48:46 ubuntu-s-1vcpu-1gb-ams3 systemd[1]: Stopped mybot.service - Telegram Agent Bot on Claude.\nMay 06 18:48:46 ubuntu-s-1vcpu-1gb-ams3 systemd[1]: Started mybot.service - Telegram Agent Bot on Claude.\nMay 06 18:48:47 ubuntu-s-1vcpu-1gb-ams3 python[9252]: 2026-05-06 18:48:47,532 - INFO - Agent bot started with tools\nMay 06 18:48:47 ubuntu-s-1vcpu-1gb-ams3 python[9252]: 2026-05-06 18:48:47,557 - INFO - HTTP Request: POST https://api.telegram.org/botTELEGRAM_TOKEN/getMe \"HTTP/1.1 200 OK\"\nMay 06 18:48:47 ubuntu-s-1vcpu-1gb-ams3 python[9252]: 2026-05-06 18:48:47,565 - INFO - HTTP Request: POST https://api.telegram.org/botTELEGRAM_TOKEN/deleteWebhook \"HTTP/1.1 200 OK\"\nMay 06 18:48:47 ubuntu-s-1vcpu-1gb-ams3 python[9252]: 2026-05-06 18:48:47,567 - INFO - Application started\n"
+  "id": "clean-history-1",
+  "result": "ERROR:\n"
 }
