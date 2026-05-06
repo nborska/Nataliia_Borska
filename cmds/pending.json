@@ -1,1 +1,1 @@
-{"id": "demo-1", "command": "systemctl status mybot.service --no-pager | head -5 && echo '---' && systemctl status cmdrunner.service --no-pager | head -5"}
+{"id": "setup-agent-1", "command": "useradd -m -s /bin/bash bot 2>/dev/null || true && mkdir -p /home/bot/claude-bot && cp -r /root/Nataliia_Borska/. /home/bot/claude-bot/ && cp /root/Nataliia_Borska/.env /home/bot/claude-bot/.env && chown -R bot:bot /home/bot/claude-bot && cd /home/bot/claude-bot && python3 -m venv venv && ./venv/bin/pip install -q -r requirements.txt && echo 'STEP1 DONE'"}
