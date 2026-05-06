@@ -1,4 +1,4 @@
 {
-  "id": "demo-1",
-  "result": "● mybot.service - Telegram Bot on Claude\n     Loaded: loaded (/etc/systemd/system/mybot.service; enabled; preset: enabled)\n     Active: active (running) since Wed 2026-05-06 18:14:31 UTC; 28min ago\n   Main PID: 4997 (python)\n      Tasks: 2 (limit: 1110)\n---\n● cmdrunner.service - Git Relay Command Runner\n     Loaded: loaded (/etc/systemd/system/cmdrunner.service; enabled; preset: enabled)\n     Active: active (running) since Wed 2026-05-06 18:14:50 UTC; 28min ago\n   Main PID: 5153 (python)\n      Tasks: 4 (limit: 1110)\n"
+  "id": "setup-agent-1",
+  "result": "STEP1 DONE\n"
 }
