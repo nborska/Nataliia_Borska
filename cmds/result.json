@@ -1,4 +1,4 @@
 {
-  "id": "clean-history-1",
-  "result": "ERROR:\n"
+  "id": "clean-step-1",
+  "result": "ERROR:\n\nnote: If you believe this is a mistake, please contact your Python installation or OS distribution provider. You can override this, at the risk of breaking your Python installation or OS, by passing --break-system-packages.\nhint: See PEP 668 for the detailed specification.\ngit: 'filter-repo' is not a git command. See 'git --help'.\n"
 }
