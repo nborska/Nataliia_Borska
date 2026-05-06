@@ -1,4 +1,4 @@
 {
-  "id": "clean-step-1",
-  "result": "ERROR:\n\nnote: If you believe this is a mistake, please contact your Python installation or OS distribution provider. You can override this, at the risk of breaking your Python installation or OS, by passing --break-system-packages.\nhint: See PEP 668 for the detailed specification.\ngit: 'filter-repo' is not a git command. See 'git --help'.\n"
+  "id": "clean-step-2",
+  "result": "No user sessions are running outdated binaries.\n\nNo VM guests are running outdated hypervisor (qemu) binaries on this host.\ned61b4050b71\n"
 }
