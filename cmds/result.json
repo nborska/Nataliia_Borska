@@ -1,1 +1,4 @@
-{"id": "", "result": ""}
+{
+  "id": "test-1",
+  "result": "ready\nubuntu-s-1vcpu-1gb-ams3\n 18:17:00 up  1:44,  3 users,  load average: 0.03, 0.02, 0.00\n"
+}
