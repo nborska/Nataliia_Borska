@@ -1,1 +1,1 @@
-{"id": "test-1", "command": "echo ready && hostname && uptime"}
+{"id": "demo-1", "command": "systemctl status mybot.service --no-pager | head -5 && echo '---' && systemctl status cmdrunner.service --no-pager | head -5"}
