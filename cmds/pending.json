@@ -1,1 +1,1 @@
-{"id": "fix-deps-1", "command": "/home/bot/claude-bot/venv/bin/pip install httpx beautifulsoup4 && systemctl restart mybot.service && sleep 4 && journalctl -u mybot.service -n 10 --no-pager"}
+{"id": "fix-venv-1", "command": "cd /home/bot/claude-bot && rm -rf venv && python3 -m venv venv && ./venv/bin/pip install -q anthropic python-telegram-bot python-dotenv httpx beautifulsoup4 && systemctl restart mybot.service && sleep 5 && journalctl -u mybot.service -n 8 --no-pager"}
