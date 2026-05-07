@@ -21,17 +21,19 @@
 > Music Distribution for Artists Who Are Done Doing It Alone
 
 **🟢 НА:**
-> Music Distribution for Filipino Artists with Live Releases — and Done Growing Alone
+> You've Got Releases on Spotify. Now You Need Someone to Fight for Them.
+
+**Чому це працює:**
+- "You've got releases on Spotify" — початківець не впізнає себе і йде. Фільтр без агресії.
+- "Fight for them" — найсильніше слово: DistroKid не бореться за музику артиста, TuneCore не бореться. Це формулює весь product positioning одним словом.
+- Ідеально підводить до існуючого підзаголовку.
 
 ---
 
 ## Підзаголовок
 
-**🔴 ЗАМІНИТИ:**
+**Залишити без змін** — він ідеально доповнює новий H1:
 > Streams aren't growing. YouTube isn't working. And your distributor hasn't replied in 6 days.
-
-**🟢 НА:**
-> You already have music on Spotify. Streams aren't growing. YouTube isn't working. And your distributor hasn't replied in 6 days.
 
 ---
 
@@ -40,7 +42,7 @@
 **Залишити без змін** — вони сильні. Тільки додати один рядок зверху над bullets:
 
 **🟢 ДОДАТИ перед bullets:**
-> *For artists with at least 1 release on Spotify and 1,500+ monthly listeners.*
+> *For Filipino artists with 1,500+ monthly listeners and an active release schedule.*
 
 ---
 
@@ -262,14 +264,12 @@ We approve approximately 1 in 5 applications. Average review time: 24-48 hours.
 > Independent Electronic Artist
 
 **🟢 НА:**
-> Independent Electronic Artist · [X]K monthly listeners
-
-(Підставити реальну цифру. Якщо є дані про ріст — додати рядок під цитатою:)
+> Independent Electronic Artist · Grew to 300K+ monthly listeners
 
 **🟢 ДОДАТИ під текстом цитати (опціонально):**
-> *📈 Went from [X]K to [Y]K monthly listeners in [Z] months with AIR.*
+> *📈 +224K monthly listeners · 4x growth with AIR*
 
-**Текст цитати — залишити без змін.** Сильний, емоційний, про цінність менеджера.
+**Текст цитати — залишити без змін.**
 
 ---
 
@@ -279,11 +279,11 @@ We approve approximately 1 in 5 applications. Average review time: 24-48 hours.
 > Independent Artist
 
 **🟢 НА:**
-> [Жанр] · [Країна] · [X]K monthly listeners
+> Independent Electronic Artist
 
-Приклад: `Electronic Producer · Iran · 3.5K monthly listeners`
+(Країну не вказувати — не таргетований ринок. Цифр listeners немає — залишити тільки жанр.)
 
-**Текст цитати — залишити без змін.** Говорить про підтримку і планування — сигнал для серйозного артиста, не початківця.
+**Текст цитати — залишити без змін.** Говорить про підтримку і швидкість — сигнал для серйозного артиста.
 
 ---
 
@@ -293,9 +293,9 @@ We approve approximately 1 in 5 applications. Average review time: 24-48 hours.
 > Independent Artist
 
 **🟢 НА:**
-> Independent Artist · Indonesia · [X]K monthly listeners
+> Independent Artist · Indonesia · 40+ releases
 
-Приклад: `Independent Artist · Indonesia · 5K monthly listeners`
+(Кількість релізів — сильний сигнал mid-tier рівня навіть без цифр listeners.)
 
 **Текст цитати — залишити без змін.** Говорить про довгострокове планування — це не мова початківця.
 
