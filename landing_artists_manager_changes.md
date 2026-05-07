@@ -240,19 +240,64 @@ We approve approximately 1 in 5 applications. Average review time: 24-48 hours.
 
 **Залишити без змін.**
 
-## Тестимоніал Rian DTM
+---
+
+## ⚠️ ДО ПРАВОК — зібрати у артистів реальні цифри
+
+Перед тим як вносити зміни в підписи, потрібно отримати:
+
+| Артист | Що потрібно |
+|--------|------------|
+| Rian DTM | Поточні monthly listeners на Spotify + listeners **до** AIR (якщо є) |
+| Farhad (FH360) | Поточні monthly listeners + жанр |
+| Angga | Поточні monthly listeners + країна |
+
+Якщо цифр немає — мінімум додати жанр і гео. Але **monthly listeners — пріоритет**.
+
+---
+
+## Тестимоніал 1 — Rian DTM
 
 **🔴 ЗАМІНИТИ підпис під ім'ям:**
 > Independent Electronic Artist
 
 **🟢 НА:**
-> Independent Electronic Artist · 8K monthly listeners
+> Independent Electronic Artist · [X]K monthly listeners
 
-(Якщо реальна цифра інша — підставити справжню. Тестимоніал з конкретним числом — це **одночасно і кваліфікатор**: початківець бачить "8K" і розуміє рівень площадки.)
+(Підставити реальну цифру. Якщо є дані про ріст — додати рядок під цитатою:)
 
-## Текст тестимоніалу
+**🟢 ДОДАТИ під текстом цитати (опціонально):**
+> *📈 Went from [X]K to [Y]K monthly listeners in [Z] months with AIR.*
 
-**Залишити без змін** — якщо є можливість додати конкретну цифру росту, ще краще.
+**Текст цитати — залишити без змін.** Сильний, емоційний, про цінність менеджера.
+
+---
+
+## Тестимоніал 2 — Farhad (FH360)
+
+**🔴 ЗАМІНИТИ підпис під ім'ям:**
+> Independent Artist
+
+**🟢 НА:**
+> [Жанр] · [Країна] · [X]K monthly listeners
+
+Приклад: `Electronic Producer · Iran · 3.5K monthly listeners`
+
+**Текст цитати — залишити без змін.** Говорить про підтримку і планування — сигнал для серйозного артиста, не початківця.
+
+---
+
+## Тестимоніал 3 — Angga
+
+**🔴 ЗАМІНИТИ підпис під ім'ям:**
+> Independent Artist
+
+**🟢 НА:**
+> Independent Artist · Indonesia · [X]K monthly listeners
+
+Приклад: `Independent Artist · Indonesia · 5K monthly listeners`
+
+**Текст цитати — залишити без змін.** Говорить про довгострокове планування — це не мова початківця.
 
 ---
 
