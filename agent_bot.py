@@ -1,4 +1,4 @@
-import os, logging, math, base64
+import os, logging, math, base64, copy
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -180,6 +180,29 @@ def _blocks_to_dicts(content_blocks) -> list:
     return result
 
 
+def _clean_messages(messages: list) -> list:
+    """Return a deep-copied, sanitized version of messages for the API call.
+
+    Removes empty text blocks (which cause 400 errors when cache_control is
+    auto-added by the SDK) and avoids the SDK mutating our stored history.
+    """
+    result = []
+    for msg in messages:
+        content = msg.get("content")
+        if isinstance(content, list):
+            clean = [
+                copy.copy(b) for b in content
+                if not (isinstance(b, dict)
+                        and b.get("type") == "text"
+                        and not (b.get("text") or "").strip())
+            ]
+            if clean:
+                result.append({**msg, "content": clean})
+        else:
+            result.append(copy.copy(msg))
+    return result
+
+
 async def agent_loop(messages: list) -> str:
     while True:
         resp = claude.messages.create(
@@ -187,7 +210,7 @@ async def agent_loop(messages: list) -> str:
             max_tokens=2048,
             system=SYSTEM_PROMPT,
             tools=TOOLS,
-            messages=messages,
+            messages=_clean_messages(messages),
         )
 
         content_dicts = _blocks_to_dicts(resp.content)
@@ -237,15 +260,18 @@ async def notes_cmd(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 async def chat(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
     msgs = history.setdefault(uid, [])
+    start_len = len(msgs)
     msgs.append({"role": "user", "content": update.message.text})
     await ctx.bot.send_chat_action(chat_id=update.effective_chat.id, action="typing")
     try:
         text = await agent_loop(msgs)
-        history[uid] = history[uid][-40:]
         await update.message.reply_text(text)
     except Exception:
         log.exception("chat error")
-        await update.message.reply_text("Помилка. Напиши /reset і спробуй ще раз.")
+        del msgs[start_len:]  # revert partial state added during the failed turn
+        await update.message.reply_text("Помилка. Спробуй ще раз або напиши /reset.")
+    finally:
+        history[uid] = history[uid][-40:]
 
 
 async def photo_handler(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
