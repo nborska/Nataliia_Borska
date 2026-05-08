@@ -168,6 +168,18 @@ def run_tool(name: str, inputs: dict) -> str:
     return "Невідомий інструмент."
 
 
+def _blocks_to_dicts(content_blocks) -> list:
+    """Convert SDK content blocks to plain dicts, drop empty text blocks."""
+    result = []
+    for b in content_blocks:
+        if b.type == "text":
+            if b.text and b.text.strip():
+                result.append({"type": "text", "text": b.text})
+        elif b.type == "tool_use":
+            result.append({"type": "tool_use", "id": b.id, "name": b.name, "input": b.input})
+    return result
+
+
 async def agent_loop(messages: list) -> str:
     while True:
         resp = claude.messages.create(
@@ -177,18 +189,25 @@ async def agent_loop(messages: list) -> str:
             tools=TOOLS,
             messages=messages,
         )
+
+        content_dicts = _blocks_to_dicts(resp.content)
+
         if resp.stop_reason == "end_turn":
-            text = next((b.text for b in resp.content if hasattr(b, "text")), "")
-            messages.append({"role": "assistant", "content": resp.content})
-            return text
+            text = next((b["text"] for b in content_dicts if b["type"] == "text"), "")
+            if content_dicts:
+                messages.append({"role": "assistant", "content": content_dicts})
+            return text or "Готово."
+
         if resp.stop_reason == "tool_use":
-            messages.append({"role": "assistant", "content": resp.content})
-            results = [
+            if content_dicts:
+                messages.append({"role": "assistant", "content": content_dicts})
+            tool_results = [
                 {"type": "tool_result", "tool_use_id": b.id, "content": run_tool(b.name, b.input)}
                 for b in resp.content if b.type == "tool_use"
             ]
-            messages.append({"role": "user", "content": results})
+            messages.append({"role": "user", "content": tool_results})
             continue
+
         break
     return "Не вдалося отримати відповідь."
 
@@ -226,7 +245,7 @@ async def chat(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(text)
     except Exception:
         log.exception("chat error")
-        await update.message.reply_text("Помилка. Спробуй ще раз.")
+        await update.message.reply_text("Помилка. Напиши /reset і спробуй ще раз.")
 
 
 async def photo_handler(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
