@@ -1,1 +1,1 @@
-{"id": "bot-diag-2", "command": "systemctl status mybot.service --no-pager -l 2>&1 | tail -20 && echo '---LAST LOGS---' && journalctl -u mybot.service --no-pager -n 15 2>&1"}
+{"id": "check-version-1", "command": "cd /root/nataliia_borska && git log --oneline -3 && echo '---SERVICE---' && systemctl is-active mybot.service && echo '---LOGS---' && journalctl -u mybot.service --no-pager -n 10 2>&1"}
