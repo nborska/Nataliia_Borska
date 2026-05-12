@@ -22,8 +22,9 @@ async def reset(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
 async def chat(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
-    user_text = (update.message.text or "").strip()
+    user_text = (update.message.text or update.message.caption or "").strip()
     if not user_text:
+        await update.message.reply_text("Надішли текст або фото з підписом — я відповім.")
         return
     history.setdefault(uid, []).append({"role": "user", "content": user_text})
     # remove any messages with empty content that would cause API 400 errors
@@ -48,7 +49,7 @@ def main():
     app = ApplicationBuilder().token(os.environ["TELEGRAM_BOT_TOKEN"]).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("reset", reset))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, chat))
+    app.add_handler(MessageHandler((filters.TEXT | filters.PHOTO) & ~filters.COMMAND, chat))
     log.info("Bot started")
     app.run_polling()
 
