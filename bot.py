@@ -22,16 +22,23 @@ async def reset(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
 async def chat(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
-    history.setdefault(uid, []).append({"role": "user", "content": update.message.text})
+    user_text = (update.message.text or update.message.caption or "").strip()
+    if not user_text:
+        await update.message.reply_text("Надішли текст або фото з підписом — я відповім.")
+        return
+    history.setdefault(uid, []).append({"role": "user", "content": user_text})
+    # remove any messages with empty content that would cause API 400 errors
+    clean_history = [m for m in history[uid] if m.get("content", "").strip()]
     await ctx.bot.send_chat_action(chat_id=update.effective_chat.id, action="typing")
     try:
         resp = claude.messages.create(
             model="claude-opus-4-7", max_tokens=1024,
             system="Ти доброзичливий асистент. Відповідай коротко та по суті українською.",
-            messages=history[uid],
+            messages=clean_history,
         )
         text = resp.content[0].text
-        history[uid].append({"role": "assistant", "content": text})
+        if text.strip():
+            history[uid].append({"role": "assistant", "content": text})
         history[uid] = history[uid][-20:]
         await update.message.reply_text(text)
     except Exception:
@@ -42,7 +49,7 @@ def main():
     app = ApplicationBuilder().token(os.environ["TELEGRAM_BOT_TOKEN"]).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("reset", reset))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, chat))
+    app.add_handler(MessageHandler((filters.TEXT | filters.PHOTO) & ~filters.COMMAND, chat))
     log.info("Bot started")
     app.run_polling()
 
