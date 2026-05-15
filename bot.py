@@ -32,7 +32,7 @@ async def chat(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     await ctx.bot.send_chat_action(chat_id=update.effective_chat.id, action="typing")
     try:
         resp = claude.messages.create(
-            model="claude-opus-4-7", max_tokens=1024,
+            model="claude-sonnet-4-6", max_tokens=1024,
             system="Ти доброзичливий асистент. Відповідай коротко та по суті українською.",
             messages=clean_history,
         )
