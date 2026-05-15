@@ -142,7 +142,7 @@
 
   /* ─── CONTENT PAGES ─── */
   .page {
-    padding: 56px 64px;
+    padding: 36px 48px;
     page-break-after: always;
   }
 
@@ -152,8 +152,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 48px;
-    padding-bottom: 20px;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
     border-bottom: 2px solid #0033FF;
   }
 
@@ -185,22 +185,22 @@
   }
 
   h1 {
-    font-size: 42px;
+    font-size: 36px;
     font-weight: 900;
     line-height: 1.1;
     color: #0D0D0D;
     letter-spacing: -1px;
     text-transform: uppercase;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
 
   h2 {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 900;
     color: #0D0D0D;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin: 36px 0 14px;
+    margin: 22px 0 10px;
     padding-left: 12px;
     border-left: 4px solid #CCFF00;
   }
@@ -215,32 +215,32 @@
   }
 
   p {
-    font-size: 14px;
+    font-size: 13px;
     font-family: Arial, sans-serif;
     font-weight: 400;
     color: #3d3d3d;
-    line-height: 1.75;
-    margin-bottom: 12px;
+    line-height: 1.65;
+    margin-bottom: 8px;
   }
 
   .lead {
-    font-size: 16px;
+    font-size: 14px;
     font-family: Arial, sans-serif;
     color: #0D0D0D;
     font-weight: 700;
-    line-height: 1.65;
+    line-height: 1.6;
     border-left: 4px solid #0033FF;
-    padding: 16px 20px;
+    padding: 12px 18px;
     background: #f5f7ff;
-    margin-bottom: 28px;
+    margin-bottom: 16px;
   }
 
   /* Alert */
   .alert {
     background: #0D0D0D;
     border-radius: 4px;
-    padding: 22px 28px;
-    margin: 24px 0;
+    padding: 16px 22px;
+    margin: 14px 0;
     page-break-inside: avoid;
   }
 
@@ -250,39 +250,43 @@
     color: #CCFF00;
     letter-spacing: 3px;
     text-transform: uppercase;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .alert p {
-    color: rgba(255,255,255,0.65);
+    color: rgba(255,255,255,0.85);
     font-size: 13px;
     margin: 0;
-    line-height: 1.65;
+    line-height: 1.6;
   }
 
   /* Dark boxes */
   .dark-box {
     background: #0D0D0D;
     border-radius: 4px;
-    padding: 28px 32px;
-    margin: 24px 0;
+    padding: 20px 24px;
+    margin: 12px 0;
     page-break-inside: avoid;
   }
 
-  .dark-box + .dark-box { margin-top: -4px; border-top: 1px solid #222; }
+  .dark-box + .dark-box { margin-top: 8px; border-top: 1px solid #222; }
+
+  .dark-box p { color: rgba(255,255,255,0.85); }
+
+  .dark-boxes-group { page-break-inside: avoid; }
 
   /* Two columns */
   .two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin: 24px 0;
+    gap: 12px;
+    margin: 14px 0;
     page-break-inside: avoid;
   }
 
   .col-card {
     border-radius: 4px;
-    padding: 28px;
+    padding: 20px;
     page-break-inside: avoid;
   }
 
@@ -448,8 +452,8 @@
   /* Steps */
   .step {
     display: flex;
-    gap: 18px;
-    margin-bottom: 18px;
+    gap: 14px;
+    margin-bottom: 12px;
     align-items: flex-start;
     page-break-inside: avoid;
   }
@@ -519,8 +523,8 @@
   .highlight {
     background: #CCFF00;
     border-radius: 4px;
-    padding: 18px 24px;
-    margin: 20px 0;
+    padding: 14px 20px;
+    margin: 14px 0;
     page-break-inside: avoid;
   }
 
@@ -701,14 +705,16 @@
 
   <p>Spotify, Apple Music, YouTube Music and most major platforms now have two layers of detection:</p>
 
-  <div class="dark-box">
-    <h3>Layer 1 — Content ID Scanning</h3>
-    <p>Every track gets scanned against a database of known AI-generated audio patterns. Suno, Udio, and similar tools have recognizable sonic fingerprints. When a match is found — the track gets flagged automatically.</p>
-  </div>
+  <div class="dark-boxes-group">
+    <div class="dark-box">
+      <h3>Layer 1 — Content ID Scanning</h3>
+      <p>Every track gets scanned against a database of known AI-generated audio patterns. Suno, Udio, and similar tools have recognizable sonic fingerprints. When a match is found — the track gets flagged automatically.</p>
+    </div>
 
-  <div class="dark-box">
-    <h3>Layer 2 — Rights Verification</h3>
-    <p>When you upload through a distributor, you sign a declaration that you own the rights. With a free Suno account, you don't. Suno's free tier gives personal use only — not commercial distribution rights.</p>
+    <div class="dark-box">
+      <h3>Layer 2 — Rights Verification</h3>
+      <p>When you upload through a distributor, you sign a declaration that you own the rights. With a free Suno account, you don't. Suno's free tier gives personal use only — not commercial distribution rights.</p>
+    </div>
   </div>
 
   <div class="alert">
