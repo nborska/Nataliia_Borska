@@ -196,10 +196,49 @@
 
 **HubSpot пайплайн:** New Lead → Contacted → Data Check → Qualified → Demo/Call Done → Contract Sent → Won / Lost
 
-**Платна реклама:**
-- Meta Ads: активні кампанії на Філіппіни. Піксель: AIR CE Pixel. Мета — конверсія, не кліки.
-- Google Ads: Search. Найсильніший ad group: `royalty_issues`. Логіка crisis funnel.
-- TikTok Ads: ВИМКНЕНО
+---
+
+### Активні канали (зараз)
+
+**1. Органіка — сторінки на air.io**
+Основне джерело якісних лідів. Чотири сторінки:
+- https://air.io/en/music-distribution
+- https://air.io/en/marketplace/music-distribution
+- https://air.io/en/marketplace/music-playlist-pitching
+- https://air.io/en/marketplace/music-release-promotion
+
+**2. Платна реклама (Meta + Google Search)**
+Дві кампанії на Філіппіни:
+- **Check My Track** — лід-магніт (безкоштовний аудит)
+- **Apply for Personal Manager** — основна конверсія
+
+⚠️ **Головна проблема реклами:** приходять початківці та ті, хто генерує музику з AI — не mid-tier артисти. Потрібна робота з таргетингом та креативами.
+
+Meta Ads: Піксель AIR CE Pixel, ціль — конверсія, не кліки.
+Google Ads: Search, найсильніший ad group `royalty_issues` (CTR 10.1%, CPA ~$3.4).
+TikTok Ads: вимкнено.
+
+**3. Блог AIR Media-Tech**
+Публікуємо статті про музичну дистрибуцію. SEO-оптимізовано. Органіка з блогу дає якісні ліди.
+
+**4. Соціальні мережі**
+Instagram, Facebook, TikTok — сторінки нові, тільки на старті. Іноді приходять ліди, але канал ще не розвинутий.
+
+**5. Холодний аутріч (email)**
+Робиться рідко. В планах — масштабувати.
+
+---
+
+### Плани (наступні фази)
+
+1. **Інфлюенс-маркетинг** — мікро (5K–50K): Music Producers, Indie Artist Vloggers, Vocal Coaches
+2. **Події** — вже їдемо на Primavera PRO (Іспанія, червень 2026)
+3. **PR** — медіа, подкасти, зовнішні публікації
+4. **Воркшопи** — освітній формат для артистів
+
+**Інструменти пошуку інфлюенсерів:** Groover, FindMeCreators, StarNgage, Modash
+
+---
 
 **Найефективніші креативи Meta:**
 - Check My Track: "royalties static"
@@ -216,13 +255,6 @@
 3. How-To Spotify upload (6700+/mo — найбільший об'єм)
 4. Rights / Content ID Confusion
 5. Crisis (малий об'єм, але висока конверсія — "cherry picking")
-
-**Інфлюенс-маркетинг (в пріоритеті):**
-- Music Producers & Beatmakers
-- Indie Artist Vloggers
-- Vocal Coaches (всі три ринки)
-
-**Інструменти пошуку інфлюенсерів:** Groover, FindMeCreators, StarNgage, Modash
 
 ---
 
@@ -270,7 +302,7 @@
 
 ## 10. ЩО ВЖЕ НЕ СПРАЦЮВАЛО
 
-- Meta Ads з широким таргетингом → приходять початківці, не mid-tier
+- Meta Ads з широким таргетингом → приходять початківці та ті, хто генерує музику з AI — не mid-tier артисти
 - Фокус на дешевизні та порівнянні з конкурентами
 - Обіцянки "more streams" / "grow fast"
 - Контент для початківців (ЦА вже distributed)
