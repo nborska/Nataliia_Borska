@@ -29,7 +29,9 @@ DATA = BASE / "data"
 DATA.mkdir(exist_ok=True)
 
 # Модель — конфігурується через .env (CLAUDE_MODEL), щоб міняти без коду.
-MODEL = os.environ.get("CLAUDE_MODEL", "claude-opus-4-7")
+# Дефолт — та, що вже працювала у твоєму боті. Для кращої якості можна
+# поставити сильнішу в .env (напр. CLAUDE_MODEL=claude-opus-4-7).
+MODEL = os.environ.get("CLAUDE_MODEL", "claude-sonnet-4-6")
 MAX_TOKENS = int(os.environ.get("MAX_TOKENS", "4096"))
 
 claude = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
