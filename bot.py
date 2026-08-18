@@ -28,10 +28,36 @@ BASE = Path(__file__).parent
 DATA = BASE / "data"
 DATA.mkdir(exist_ok=True)
 
-# Модель — конфігурується через .env (CLAUDE_MODEL), щоб міняти без коду.
-# Дефолт — та, що вже працювала у твоєму боті. Для кращої якості можна
-# поставити сильнішу в .env (напр. CLAUDE_MODEL=claude-opus-4-7).
-MODEL = os.environ.get("CLAUDE_MODEL", "claude-sonnet-4-6")
+# Модель. Бот САМ підбирає робочу зі списку (моделі час від часу
+# застарівають — це рятує від "падінь"). Можна зафіксувати через .env CLAUDE_MODEL.
+MODEL_CANDIDATES = [m for m in [
+    os.environ.get("CLAUDE_MODEL"),
+    "claude-sonnet-4-5",
+    "claude-sonnet-4-20250514",
+    "claude-3-5-sonnet-latest",
+    "claude-3-5-sonnet-20241022",
+    "claude-3-5-haiku-latest",
+] if m]
+_working_model = None  # запам'ятовуємо першу робочу
+
+def _create(**kwargs):
+    """Виклик Claude із автопідбором робочої моделі."""
+    global _working_model
+    order = ([_working_model] if _working_model else []) + \
+            [m for m in MODEL_CANDIDATES if m != _working_model]
+    last_err = None
+    for m in order:
+        try:
+            resp = claude.messages.create(model=m, **kwargs)
+            if _working_model != m:
+                _working_model = m
+                log.info("Робоча модель: %s", m)
+            return resp
+        except (anthropic.NotFoundError, anthropic.BadRequestError) as e:
+            last_err = e
+            log.warning("Модель %s не підійшла: %s", m, e)
+            continue
+    raise last_err if last_err else RuntimeError("Немає доступних моделей")
 MAX_TOKENS = int(os.environ.get("MAX_TOKENS", "4096"))
 
 claude = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
@@ -190,8 +216,7 @@ def _clean_messages(messages: list) -> list:
 
 def agent_loop(uid: int, messages: list) -> str:
     while True:
-        resp = claude.messages.create(
-            model=MODEL,
+        resp = _create(
             max_tokens=MAX_TOKENS,
             system=system_blocks(uid),
             tools=TOOLS,
@@ -259,11 +284,15 @@ async def handle(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         # Telegram ліміт 4096 символів — ріжемо на частини
         for chunk in _split(reply, 4000):
             await update.message.reply_text(chunk)
-    except Exception:
+    except Exception as e:
         log.exception("handle error")
         del msgs[snapshot:]
         save_history(uid, msgs)
-        await update.message.reply_text("Ой, щось збилось 🙈 Спробуй ще раз або напиши /reset.")
+        # тимчасово показуємо суть помилки — легше діагностувати на етапі запуску
+        await update.message.reply_text(
+            "Ой, щось збилось 🙈 Спробуй ще раз або напиши /reset.\n"
+            f"(тех. деталь: {type(e).__name__}: {str(e)[:250]})"
+        )
 
 def _split(text: str, size: int) -> list:
     if len(text) <= size:
@@ -285,7 +314,8 @@ def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("reset", reset))
     app.add_handler(MessageHandler((filters.TEXT | filters.PHOTO) & ~filters.COMMAND, handle))
-    log.info("Юстина запущена (модель: %s, знань: %d символів)", MODEL, len(KNOWLEDGE))
+    log.info("Юстина запущена (кандидати моделей: %s, знань: %d символів)",
+             ", ".join(MODEL_CANDIDATES), len(KNOWLEDGE))
     app.run_polling()
 
 if __name__ == "__main__":
