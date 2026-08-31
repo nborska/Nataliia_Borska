@@ -243,12 +243,29 @@ def agent_loop(uid: int, messages: list) -> str:
 
 # ─────────────────────────── ХЕНДЛЕРИ ───────────────────────────
 async def start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "Привіт! Я Юстина — твій кишеньковий продюсер 🤍\n\n"
-        "Разом зберемо стратегію, продукт і контент для твого блогу — "
-        "крок за кроком, живою мовою. Напиши мені, і почнемо 🌱\n\n"
-        "Команди: /reset — почати заново."
-    )
+    """Починаємо: Юстина сама вітається за сценарієм і ставить перше питання."""
+    uid = update.effective_user.id
+    _hist_path(uid).unlink(missing_ok=True)  # свіжий старт
+    seed = [{"role": "user", "content": [{"type": "text", "text": (
+        "(Клієнтка щойно відкрила бота і натиснула /start. Привітайся як Юстина "
+        "за сценарієм ВСТУПУ з мозку: коротко й тепло поясни, хто ти і як ми "
+        "працюємо, покажи шлях (🌱 фундамент → 💎 продукт → ✍️ контент → "
+        "⚙️ автоворонка), і ОДРАЗУ постав ПЕРШЕ питання — 'навіщо тобі блог?' "
+        "з варіантами. Далі веди сама. Не згадуй, що ти AI-модель.)"
+    )}]}]
+    await ctx.bot.send_chat_action(chat_id=update.effective_chat.id, action="typing")
+    try:
+        reply = agent_loop(uid, seed)
+        save_history(uid, seed[-40:])
+        for chunk in _split(reply, 4000):
+            await update.message.reply_text(chunk)
+    except Exception as e:
+        log.exception("start error")
+        await update.message.reply_text(
+            "Привіт! Я Юстина — твій кишеньковий продюсер 🤍\n"
+            "Напиши мені «почнімо» — і зберемо твою стратегію крок за кроком 🌱\n"
+            f"(тех. деталь: {type(e).__name__}: {str(e)[:200]})"
+        )
 
 async def reset(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
