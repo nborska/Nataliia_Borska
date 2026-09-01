@@ -4,7 +4,7 @@
 
 Головний файл (mybot.service). Мозок і база знань підвантажуються з .md-файлів.
 """
-import os, logging, json, base64, copy
+import os, logging, json, base64, copy, re
 from pathlib import Path
 from datetime import datetime
 from zoneinfo import ZoneInfo
@@ -63,36 +63,76 @@ MAX_TOKENS = int(os.environ.get("MAX_TOKENS", "4096"))
 claude = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 
 # ─────────────────────────── МОЗОК + БАЗА ЗНАНЬ ───────────────────────────
-# Системний промпт (характер Юстини) + база знань (методологія, гачки).
-KNOWLEDGE_FILES = [
-    "producer_brain_prompt.md",  # характер + правила (головне)
-    "bot_brain.md",              # логіка режимів, правки з тестів
-    "newlook_method.md",         # база знань (3 навчання)
-    "hooks_bank.md",             # банк заголовків
-]
+# ОПТИМІЗАЦІЯ: у системний промпт іде лише КОМПАКТНИЙ мозок (~5к токенів
+# замість ~60к). Повні файли — довідник, підвантажується на вимогу через
+# інструмент lookup_knowledge (див. нижче). Здешевлює у ~10 разів.
+COMPACT_FILE = "brain_compact.md"
+REFERENCE_FILES = ["hooks_bank.md", "newlook_method.md", "bot_brain.md"]
 
-def load_knowledge() -> str:
-    parts = []
-    for fn in KNOWLEDGE_FILES:
+def load_compact() -> str:
+    p = BASE / COMPACT_FILE
+    if p.exists():
+        return p.read_text(encoding="utf-8")
+    # запасний варіант — старий повний промпт
+    p2 = BASE / "producer_brain_prompt.md"
+    log.warning("Немає %s, вантажу producer_brain_prompt.md", COMPACT_FILE)
+    return p2.read_text(encoding="utf-8") if p2.exists() else ""
+
+KNOWLEDGE = load_compact()
+
+def _load_reference_sections():
+    """Розбиваємо довідкові файли на секції (за заголовками ##/#) для пошуку."""
+    sections = []
+    for fn in REFERENCE_FILES:
         p = BASE / fn
-        if p.exists():
-            parts.append(f"\n\n===== ФАЙЛ: {fn} =====\n{p.read_text(encoding='utf-8')}")
-        else:
-            log.warning("Немає файлу знань: %s", fn)
-    return "".join(parts)
+        if not p.exists():
+            continue
+        title, cur = fn, []
+        for line in p.read_text(encoding="utf-8").split("\n"):
+            if line.startswith("# ") or line.startswith("## "):
+                if cur:
+                    sections.append((title, "\n".join(cur)))
+                title = line.lstrip("# ").strip()
+                cur = [line]
+            else:
+                cur.append(line)
+        if cur:
+            sections.append((title, "\n".join(cur)))
+    return sections
 
-KNOWLEDGE = load_knowledge()
+REFERENCE_SECTIONS = _load_reference_sections()
+
+def lookup_knowledge(query: str, max_chars: int = 4500) -> str:
+    """Пошук релевантних секцій у повній базі знань (на вимогу моделі)."""
+    qwords = {w for w in re.findall(r"[\w']+", query.lower()) if len(w) > 3}
+    if not qwords:
+        return "Уточни запит."
+    scored = []
+    for title, text in REFERENCE_SECTIONS:
+        low = (title + " " + text).lower()
+        score = sum(low.count(w) for w in qwords)
+        if any(w in title.lower() for w in qwords):
+            score += 5
+        if score:
+            scored.append((score, title, text))
+    scored.sort(key=lambda x: x[0], reverse=True)
+    out, total = [], 0
+    for _, title, text in scored[:4]:
+        chunk = text[:1800]
+        if total + len(chunk) > max_chars:
+            break
+        out.append(f"### {title}\n{chunk}")
+        total += len(chunk)
+    return "\n\n".join(out) if out else "Нічого конкретного не знайдено — відповідай зі стислого мозку."
 
 SYSTEM_INTRO = (
-    "Ти — ЮСТИНА, «Продюсер у кишені»: теплий AI-продюсер для жінок-експерток. "
-    "Нижче — твій повний мозок і база знань (кілька файлів). ГОЛОВНЕ джерело "
-    "правил і характеру — producer_brain_prompt.md: дій строго за ним. "
-    "bot_brain.md — логіка режимів і всі правки з тестів. newlook_method.md і "
-    "hooks_bank.md — база знань для якісного контенту (бери ІНФОРМАЦІЮ, але пиши "
-    "СВОЇМ теплим живим тоном, НЕ як AI, без жаргону). "
-    "Спілкуйся українською. Веди клієнтку сама, роби роботу за неї — вона лише "
-    "підтверджує. Якщо з'явилась важлива стала інформація про клієнтку (ДНК, ЦА, "
-    "продукт, ціль, позиціонування) — виклич save_profile, щоб запам'ятати."
+    "Ти — ЮСТИНА, «Продюсер у кишені». Нижче — твій КОМПАКТНИЙ мозок (стисла "
+    "робоча версія методу). Дій строго за ним. Коли потрібні ДЕТАЛІ (повний банк "
+    "гачків, приклади сценаріїв/прогрівів, розширені фреймворки) — виклич "
+    "інструмент lookup_knowledge(query), НЕ вигадуй з голови. "
+    "Пиши СВОЇМ теплим живим тоном, українською, НЕ як AI, без жаргону. Веди "
+    "клієнтку сама. Важливе про клієнтку (ДНК, ЦА, продукт, ціль, позиціонування) "
+    "зберігай через save_profile і не перепитуй."
 )
 
 def system_blocks(uid: int) -> list:
@@ -162,6 +202,18 @@ TOOLS = [
         "description": "Поточна дата, день тижня і час за Києвом (для планування контенту).",
         "input_schema": {"type": "object", "properties": {}},
     },
+    {
+        "name": "lookup_knowledge",
+        "description": "Знайти ДЕТАЛЬНИЙ матеріал у повній базі знань: банк ~200 гачків, "
+                       "готові сценарії/сюжети, повні фреймворки лекцій, приклади прогрівів, "
+                       "структура лід-магніту, приклади продаючих шапок тощо. Викликай, коли "
+                       "стислого мозку не вистачає і потрібні конкретні деталі/приклади.",
+        "input_schema": {
+            "type": "object",
+            "properties": {"query": {"type": "string", "description": "що шукаємо, напр. 'гачки про помилки', 'каркас сторітелу через біль', 'структура лід-магніту'"}},
+            "required": ["query"],
+        },
+    },
 ]
 
 def _get_datetime() -> str:
@@ -183,6 +235,8 @@ def run_tool(uid: int, name: str, inp: dict) -> str:
         return json.dumps(prof, ensure_ascii=False, indent=2) if prof else "Профіль поки порожній."
     if name == "get_datetime":
         return _get_datetime()
+    if name == "lookup_knowledge":
+        return lookup_knowledge(inp.get("query", ""))
     return "Невідомий інструмент."
 
 # ─────────────────────────── АГЕНТ-ЦИКЛ ───────────────────────────
